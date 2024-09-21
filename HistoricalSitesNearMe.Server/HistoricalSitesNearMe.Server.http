@@ -1,0 +1,6 @@
+@HistoricalSitesNearMe.Server_HostAddress = http://localhost:5240
+
+GET {{HistoricalSitesNearMe.Server_HostAddress}}/historicalsites/
+Accept: application/json
+
+###
