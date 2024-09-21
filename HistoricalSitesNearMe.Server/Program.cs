@@ -9,7 +9,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<PlacesApiFacade>();
+builder.Services.AddScoped(s => new PlacesApiFacade(s.GetRequiredService<IHttpClientFactory>(), builder.Configuration["ApiKey"]!));
 builder.Services.AddScoped<PlacesApiService>();
 
 builder.Services.AddHttpClient("PlacesApi", configureClient: c =>
