@@ -14,10 +14,12 @@ namespace HistoricalSitesNearMe.Server.Facades
             this.apiKey = apiKey;
         }
 
-        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync(string radiusFilter)
+        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync(string locationFilter, string radius)
         {
             using HttpClient httpClient = httpClientFactory.CreateClient("PlacesApi");
-            HttpResponseMessage response = await httpClient.GetAsync($"/v2/places?categories=building.historic&filter={radiusFilter}&limit=20&apiKey={apiKey}");
+            string queryString = $"/maps/api/place/nearbysearch/json?location={locationFilter}&radius={radius}&key={apiKey}&type=landmark";
+            
+            HttpResponseMessage response = await httpClient.GetAsync(queryString);
             
             if (!response.IsSuccessStatusCode)
             {
@@ -29,7 +31,7 @@ namespace HistoricalSitesNearMe.Server.Facades
             try
             {
                 PlaceResponse? placeResponse = JsonConvert.DeserializeObject<PlaceResponse>(content);
-                return placeResponse?.HistoricalSites?.Select(hs => hs.HistoricalSite).ToList();
+                return placeResponse?.HistoricalSites?.ToList();
             }
             catch (JsonReaderException ex)
             {
