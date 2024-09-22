@@ -1,23 +1,19 @@
-import { LockOutlined } from "@mui/icons-material";
-import {
-  Container,
-  CssBaseline,
-  Box,
-  Avatar,
-  Typography,
-  TextField,
-  Button,
-} from "@mui/material";
-import { SetStateAction, useState } from "react";
+import MapIcon from "@mui/icons-material/Map";
+import ForwardIcon from "@mui/icons-material/Forward";
+import { Container, CssBaseline, Box, Avatar, Button } from "@mui/material";
+import { useState } from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import { Link } from "react-router-dom";
 
 const Home = () => {
-  const [postcode, setPostcode] = useState("");
-  const [lat, setLat] = useState<number>();
-  const [lng, setLng] = useState<number>();
+  type Coordinates = {
+    lat: number;
+    lng: number;
+  };
+  const [coords, setCoords] = useState<Coordinates>();
 
   const handleContinue = () => {
-    console.log(`Lat: ${lat}, Long: ${lng}`);
+    console.log(`Lat: ${coords?.lat}, Long: ${coords?.lng}`);
   };
 
   const handleGetLocation = () => {
@@ -29,12 +25,14 @@ const Home = () => {
 
     function success(position: {
       coords: {
-        latitude: SetStateAction<number | undefined>;
-        longitude: SetStateAction<number | undefined>;
+        latitude: number;
+        longitude: number;
       };
     }) {
-      setLat(position.coords.latitude);
-      setLng(position.coords.longitude);
+      setCoords({
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      });
     }
 
     function error() {
@@ -54,39 +52,30 @@ const Home = () => {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
-            <LockOutlined />
+            <MapIcon />
           </Avatar>
-          <Typography variant="h5">Postcode</Typography>
-          <Box sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="postcode"
-              label="Postcode"
-              name="postcode"
-              autoFocus
-              value={postcode}
-              onChange={(e) => setPostcode(e.target.value)}
-            />
-            <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2, alignItems: "center" }}
-              onClick={handleGetLocation}
-              endIcon={<MyLocationIcon />}
-            >
-              Get My Location
-            </Button>
+          <Button
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleGetLocation}
+            endIcon={<MyLocationIcon />}
+          >
+            Get My Location
+          </Button>
+          <Link
+            to={`/map/${coords?.lat}/${coords?.lng}`}
+            state={{ from: "occupation" }}
+          >
             <Button
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               onClick={handleContinue}
+              endIcon={<ForwardIcon />}
             >
               Continue
             </Button>
-          </Box>
+          </Link>
         </Box>
       </Container>
     </>

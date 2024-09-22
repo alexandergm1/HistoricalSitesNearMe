@@ -1,7 +1,10 @@
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { useParams } from "react-router-dom";
 
-export default function GoogleMap(props: Props) {
-  const position = { lat: props.lat, lng: props.lng };
+export default function GoogleMap() {
+  const { lat, lng } = useParams();
+  console.log(lat, lng);
+  const position = { lat: parseFloat(lat!), lng: parseFloat(lng!) };
 
   return (
     <>
