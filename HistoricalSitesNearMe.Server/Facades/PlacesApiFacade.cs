@@ -14,10 +14,10 @@ namespace HistoricalSitesNearMe.Server.Facades
             this.apiKey = apiKey;
         }
 
-        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync()
+        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync(string radiusFilter)
         {
             using HttpClient httpClient = httpClientFactory.CreateClient("PlacesApi");
-            HttpResponseMessage response = await httpClient.GetAsync($"/v2/places?categories=building.historic&filter=rect%3A10.716463143326969%2C48.755151258420966%2C10.835314015356737%2C48.680903341613316&limit=20&apiKey={apiKey}");
+            HttpResponseMessage response = await httpClient.GetAsync($"/v2/places?categories=building.historic&filter={radiusFilter}&limit=20&apiKey={apiKey}");
             
             if (!response.IsSuccessStatusCode)
             {

@@ -7,14 +7,30 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useParams } from "react-router-dom";
 import { mapStyles } from "../mapStyles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function GoogleMap() {
   const { lat, lng } = useParams();
   console.log(lat, lng);
   const position = { lat: parseFloat(lat!), lng: parseFloat(lng!) };
   const [open, setOpen] = useState(false);
+  const [radius, setRadius] = useState(5000);
+  const [historicalSites, setHistoricalSites] = useState([]);
+  const coordinates = `${lat}:${lng}`;
 
+  useEffect(() => {
+    fetch(
+      `${
+        import.meta.env.VITE_API_URL
+      }HistoricalSites?coordinates=${coordinates}&radius=${radius}`
+    )
+      .then((results) => {
+        return results.json();
+      })
+      .then((data) => {
+        setHistoricalSites(data);
+      });
+  }, [coordinates, radius]);
   return (
     <>
       <h1>Test</h1>
