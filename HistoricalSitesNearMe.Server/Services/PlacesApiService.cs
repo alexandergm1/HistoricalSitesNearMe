@@ -12,9 +12,12 @@ namespace HistoricalSitesNearMe.Server.Services
             this.placesApiFacade = placesApiFacade;
         }
 
-        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync()
+        public async Task<List<HistoricalSite>?> GetHistoricalSitesAsync(string coordinates, string radius)
         {
-            return await placesApiFacade.GetHistoricalSitesAsync();
+            string[] splitCoordinates = coordinates.Split(':');
+
+            string locationFilter = $"location={splitCoordinates.First()}%2C{splitCoordinates.Last()}";
+            return await placesApiFacade.GetHistoricalSitesAsync(locationFilter, radius);
         }
     }
 }

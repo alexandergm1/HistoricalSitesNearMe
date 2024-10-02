@@ -14,7 +14,7 @@ builder.Services.AddScoped<PlacesApiService>();
 
 builder.Services.AddHttpClient("PlacesApi", configureClient: c =>
 {
-    c.BaseAddress = new Uri("https://api.geoapify.com/v2/");
+    c.BaseAddress = new Uri("https://maps.googleapis.com/maps");
 });
 
 var app = builder.Build();
@@ -34,7 +34,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-app.MapFallbackToFile("/index.html");
 
 app.Run();

@@ -5,11 +5,12 @@ import { useState } from "react";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { Link } from "react-router-dom";
 
+export type Coordinates = {
+  lat: number;
+  lng: number;
+};
+
 const Home = () => {
-  type Coordinates = {
-    lat: number;
-    lng: number;
-  };
   const [coords, setCoords] = useState<Coordinates>();
 
   const handleContinue = () => {

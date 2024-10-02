@@ -16,9 +16,13 @@ namespace HistoricalSitesNearMe.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetHistoricalSitesAsync()
+        public async Task<IActionResult> GetHistoricalSitesAsync([FromQuery] string coordinates, string radius)
         {
-            List<HistoricalSite>? historicalSites = await placesApiService.GetHistoricalSitesAsync();
+            if (coordinates == null)
+            {
+                return BadRequest("Invalid coordinates received, returning BadRequest");
+            }
+            List<HistoricalSite>? historicalSites = await placesApiService.GetHistoricalSitesAsync(coordinates, radius);
             if (historicalSites == null)
             {
                 return BadRequest("Error occurred retrieving historical site information. Returning BadRequest");
